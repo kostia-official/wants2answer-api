@@ -1,0 +1,13 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": false,
+  "db": {
+    "url": "postgres://root:supersecret@localhost:5433/wants2answer",
+    "dialect": "postgres",
+    "seederStorage": "sequelize",
+    "seederStorageTableName": "completed_seeders",
+    "migrationStorageTableName": "completed_migrations"
+  }
+}
