@@ -3,17 +3,19 @@ const { PresentStudents } = require('./present-students.class');
 const createModel = require('../../models/present-students.model');
 const hooks = require('./present-students.hooks');
 
-module.exports = function (app) {
+module.exports = function(app) {
   const options = {
     Model: createModel(app),
     paginate: app.get('paginate')
   };
 
-  // Initialize our service with any options it requires
-  app.use('/present-students', new PresentStudents(options, app));
+  const presentStudents = new PresentStudents(options, app);
 
-  // Get our initialized service so that we can register hooks
-  const service = app.service('present-students');
+  // Methods
+  app.use('/present-students/unset', { create: presentStudents.unset });
+  app.use('/present-students', presentStudents);
 
-  service.hooks(hooks);
+  // Hooks
+  app.service('present-students/unset').hooks(hooks);
+  app.service('present-students').hooks(hooks);
 };

@@ -11,12 +11,10 @@ module.exports = function(app) {
 
   const students = new Students(options, app);
 
+  // Methods
   app.use('/students/statistic', { find: students.getStudentsStatistic });
-
   app.use('/students', students);
 
-  // Get our initialized service so that we can register hooks
-  const service = app.service('students');
-
-  service.hooks(hooks);
+  // Hooks
+  app.service('students').hooks(hooks);
 };

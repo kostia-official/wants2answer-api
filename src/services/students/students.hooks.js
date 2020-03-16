@@ -1,14 +1,14 @@
-
+const auth = require('../../hooks/authorization');
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    create: [auth],
+    update: [auth],
+    patch: [auth],
+    remove: [auth]
   },
 
   after: {

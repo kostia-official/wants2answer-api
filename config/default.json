@@ -9,5 +9,6 @@
     "seederStorage": "sequelize",
     "seederStorageTableName": "completed_seeders",
     "migrationStorageTableName": "completed_migrations"
-  }
+  },
+  "apiToken": "supersecret"
 }

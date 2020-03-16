@@ -28,10 +28,7 @@
     "lint": "eslint src/. test/. --config .eslintrc.json",
     "dev": "nodemon src/",
     "start": "node src/",
-    "jest": "jest  --forceExit",
-    "db:migrate": "sequelize db:create && sequelize db:migrate",
-    "db:init": "sequelize db:drop; npm run db:migrate",
-    "db:test:init": "npm run db:init && sequelize db:seed:all"
+    "jest": "jest  --forceExit"
   },
   "dependencies": {
     "@feathersjs/configuration": "^4.5.2",
