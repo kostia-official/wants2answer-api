@@ -19,7 +19,7 @@ describe('students statistic route', () => {
     beforeAll(async () => {
       createdStudent = await studentsService.create(studentData);
       await Promise.all(
-        _.map(scores, score => scoresService.create({ studentId: createdStudent.id, score }))
+        _.map(scores, (score) => scoresService.create({ studentId: createdStudent.id, score }))
       );
       await presentStudentsService.create({ studentId: createdStudent.id, date });
 
@@ -43,7 +43,7 @@ describe('students statistic route', () => {
     beforeAll(async () => {
       createdStudent = await studentsService.create(studentData);
       await Promise.all(
-        _.map(scores, score => scoresService.create({ studentId: createdStudent.id, score }))
+        _.map(scores, (score) => scoresService.create({ studentId: createdStudent.id, score }))
       );
       await presentStudentsService.create({ studentId: createdStudent.id, date: '1990-01-01' });
 
@@ -78,13 +78,12 @@ describe('students statistic route', () => {
 
   describe('try to hack query', () => {
     let error;
-    let createdStudent;
 
     beforeAll(async () => {
-      createdStudent = await studentsService.create(studentData);
-
       try {
-        await studentsService.getStudentsStatistic({ query: { date: `'1990-01-01'; DROP TABLE students;` } });
+        await studentsService.getStudentsStatistic({
+          query: { date: '\'1990-01-01\'; DROP TABLE students;' }
+        });
       } catch (e) {
         error = e;
       }

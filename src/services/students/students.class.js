@@ -1,5 +1,4 @@
 const { Service } = require('feathers-sequelize');
-const _ = require('lodash');
 
 exports.Students = class Students extends Service {
   constructor(config, app) {
