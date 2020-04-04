@@ -10,5 +10,9 @@
     "seederStorageTableName": "completed_seeders",
     "migrationStorageTableName": "completed_migrations"
   },
-  "apiToken": "supersecret"
+  "apiToken": "supersecret",
+  "zoom": {
+    "verificationToken": "zoom_token",
+    "webinarGroup": "React23"
+  }
 }

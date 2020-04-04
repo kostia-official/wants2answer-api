@@ -5,10 +5,13 @@ const lessons = require('./lessons/lessons.service');
 
 const webinarParticipants = require('./webinar-participants/webinar-participants.service.js');
 
+const webinarJoins = require('./webinar-joins/webinar-joins.service.js');
+
 module.exports = function(app) {
   app.configure(students);
   app.configure(scores);
   app.configure(presentStudents);
   app.configure(lessons);
   app.configure(webinarParticipants);
+  app.configure(webinarJoins);
 };

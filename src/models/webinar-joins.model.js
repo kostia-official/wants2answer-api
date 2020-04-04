@@ -1,25 +1,29 @@
-// See http://docs.sequelizejs.com/en/latest/docs/models-definition/
-// for more of what you can do here.
 const Sequelize = require('sequelize');
+
 const DataTypes = Sequelize.DataTypes;
 
 module.exports = function(app) {
   const sequelizeClient = app.get('sequelizeClient');
   const webinarParticipants = sequelizeClient.define(
-    'webinar_participants',
+    'webinar_joins',
     {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.STRING
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
-      name: {
+      joinDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
+      },
+      participantId: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      studentId: {
-        type: DataTypes.UUID,
-        allowNull: true
+      webinarTopic: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {
