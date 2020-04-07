@@ -27,6 +27,12 @@ module.exports = function(app) {
       }
     },
     {
+      indexes: [
+        {
+          unique: true,
+          fields: ['participantId', 'joinDate']
+        }
+      ],
       hooks: {
         beforeCount(options) {
           options.raw = true;
