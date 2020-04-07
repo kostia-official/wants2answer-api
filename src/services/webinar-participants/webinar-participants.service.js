@@ -10,10 +10,10 @@ module.exports = function (app) {
   };
 
   // Initialize our service with any options it requires
-  app.use('/webinar-participants', new WebinarParticipants(options, app));
+  app.use('/webinar/participants', new WebinarParticipants(options, app));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('webinar-participants');
+  const service = app.service('webinar/participants');
 
   service.hooks(hooks);
 };

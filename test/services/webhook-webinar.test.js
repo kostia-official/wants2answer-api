@@ -43,7 +43,7 @@ describe('webinar-participants service', () => {
 
     beforeAll(async () => {
       await request
-        .post('/webinar-participants')
+        .post('/webhooks/webinar')
         .set('authorization', zoomConfig.verificationToken)
         .send(webhookEvent)
         .expect(201)
@@ -80,7 +80,7 @@ describe('webinar-participants service', () => {
 
     beforeAll(async () => {
       await request
-        .post('/webinar-participants')
+        .post('/webhooks/webinar')
         .set('authorization', zoomConfig.verificationToken)
         .send(webhookEvent)
         .expect(201)
@@ -90,7 +90,7 @@ describe('webinar-participants service', () => {
         });
 
       await request
-        .post('/webinar-participants')
+        .post('/webhooks/webinar')
         .set('authorization', zoomConfig.verificationToken)
         .send(webhookEvent)
         .expect(201)
@@ -134,12 +134,12 @@ describe('webinar-participants service', () => {
       const student = await app.service('students').create(studentData);
 
       // First join
-      await app.service('webinar-participants').create(webhookEvent, params);
+      await app.service('webhooks/webinar').create(webhookEvent, params);
 
-      await app.service('webinar-participants').patch(user_id, { studentId: student.id });
+      await app.service('webinar/participants').patch(user_id, { studentId: student.id });
 
       // Second join
-      await app.service('webinar-participants').create(webhookEvent, params);
+      await app.service('webhooks/webinar').create(webhookEvent, params);
     });
 
     it('should find a webinar_participants record with student id', async () => {
@@ -157,7 +157,7 @@ describe('webinar-participants service', () => {
 
     it('should respond with Forbidden error', () => {
       return request
-        .post('/webinar-participants')
+        .post('/webhooks/webinar')
         .send(webhookEvent)
         .expect(403);
     });
@@ -169,7 +169,7 @@ describe('webinar-participants service', () => {
 
     it('should respond with Forbidden error', () => {
       return request
-        .post('/webinar-participants')
+        .post('/webhooks/webinar')
         .set('authorization', zoomConfig.verificationToken)
         .send(webhookEvent)
         .expect(403);
@@ -182,7 +182,7 @@ describe('webinar-participants service', () => {
 
     it('should respond with Forbidden error', () => {
       return request
-        .post('/webinar-participants')
+        .post('/webhooks/webinar')
         .set('authorization', zoomConfig.verificationToken)
         .send(webhookEvent)
         .expect(403);
