@@ -27,7 +27,7 @@ exports.Webhooks = class Webhooks {
     }
 
     const participant = _.get(data, 'payload.object.participant');
-    const id = _.get(participant, 'user_id');
+    const id = _.get(participant, 'id');
     const name = _.get(participant, 'user_name');
     const joinDate = _.get(participant, 'join_time');
 

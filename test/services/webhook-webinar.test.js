@@ -10,9 +10,10 @@ const sequelize = app.get('sequelizeClient');
 const toLocalDate = (date) => new Date(date).toLocaleDateString();
 
 const createWebhookEvent = ({
-  user_id = '234883072',
+  userId = '234883072',
   topic = zoomConfig.webinarGroup,
-  event = 'webinar.participant_joined'
+  event = 'webinar.participant_joined',
+  joinTime = '2020-04-02T17:15:22Z'
 }) => ({
   event,
   payload: {
@@ -26,10 +27,10 @@ const createWebhookEvent = ({
       type: 5,
       uuid: '+vRFotWLQmG99lqDBfhnwA==',
       participant: {
-        id: 'xdMlsy3TQmaP0k7-c8JmuQ',
-        user_id,
+        id: userId,
+        user_id: Math.random().toString(),
         user_name: 'Джон',
-        join_time: '2020-04-02T17:15:22Z'
+        join_time: joinTime
       },
       host_id: 'R6NBDkEHTjmW23BG_sKykg'
     }
@@ -38,8 +39,8 @@ const createWebhookEvent = ({
 
 describe('webinar-participants service', () => {
   describe('when a participant is new', () => {
-    const user_id = faker.random.uuid();
-    const webhookEvent = createWebhookEvent({ user_id });
+    const userId = faker.random.uuid();
+    const webhookEvent = createWebhookEvent({ userId });
 
     beforeAll(async () => {
       await request
@@ -54,7 +55,7 @@ describe('webinar-participants service', () => {
     });
 
     it('should find a webinar_participants record', async () => {
-      const participant = await sequelize.model('webinar_participants').findByPk(user_id);
+      const participant = await sequelize.model('webinar_participants').findByPk(userId);
 
       expect(participant).toBeTruthy();
       expect(participant.name).toBe(webhookEvent.payload.object.participant.user_name);
@@ -63,7 +64,7 @@ describe('webinar-participants service', () => {
     it('should find one webinar_join record', async () => {
       const joins = await sequelize
         .model('webinar_joins')
-        .findAll({ where: { participantId: user_id } });
+        .findAll({ where: { participantId: userId } });
 
       expect(joins).toHaveLength(1);
 
@@ -75,14 +76,13 @@ describe('webinar-participants service', () => {
   });
 
   describe('when a participant was saved before', () => {
-    const user_id = faker.random.uuid();
-    const webhookEvent = createWebhookEvent({ user_id });
+    const userId = faker.random.uuid();
 
     beforeAll(async () => {
       await request
         .post('/webhooks/webinar')
         .set('authorization', zoomConfig.verificationToken)
-        .send(webhookEvent)
+        .send(createWebhookEvent({ userId, joinTime: faker.date.past(1) }))
         .expect(201)
         .expect(({ body }) => {
           expect(body.isParticipantCreated).toBeTruthy();
@@ -92,7 +92,7 @@ describe('webinar-participants service', () => {
       await request
         .post('/webhooks/webinar')
         .set('authorization', zoomConfig.verificationToken)
-        .send(webhookEvent)
+        .send(createWebhookEvent({ userId, joinTime: new Date() }))
         .expect(201)
         .expect(({ body }) => {
           expect(body.isParticipantCreated).toBeFalsy();
@@ -101,33 +101,25 @@ describe('webinar-participants service', () => {
     });
 
     it('should find a webinar_participants record', async () => {
-      const participant = await sequelize.model('webinar_participants').findByPk(user_id);
+      const participant = await sequelize.model('webinar_participants').findByPk(userId);
 
       expect(participant).toBeTruthy();
-      expect(participant.name).toBe(webhookEvent.payload.object.participant.user_name);
     });
 
     it('should find 2 webinar_join records', async () => {
       const joins = await sequelize
         .model('webinar_joins')
-        .findAll({ where: { participantId: user_id } });
+        .findAll({ where: { participantId: userId } });
 
       expect(joins).toHaveLength(2);
-
-      joins.forEach((join) => {
-        expect(toLocalDate(join.joinDate)).toBe(
-          toLocalDate(webhookEvent.payload.object.participant.join_time)
-        );
-        expect(join.webinarTopic).toBe(webhookEvent.payload.object.topic);
-      });
     });
   });
 
   describe('when an existing participant has related student record', () => {
-    const user_id = faker.random.uuid();
+    const userId = faker.random.uuid();
     const studentId = faker.random.uuid();
     const studentData = { id: studentId, name: faker.name.firstName() };
-    const webhookEvent = createWebhookEvent({ user_id });
+    const webhookEvent = createWebhookEvent({ userId });
     const params = { token: zoomConfig.verificationToken };
 
     beforeAll(async () => {
@@ -136,14 +128,14 @@ describe('webinar-participants service', () => {
       // First join
       await app.service('webhooks/webinar').create(webhookEvent, params);
 
-      await app.service('webinar/participants').patch(user_id, { studentId: student.id });
+      await app.service('webinar/participants').patch(userId, { studentId: student.id });
 
       // Second join
       await app.service('webhooks/webinar').create(webhookEvent, params);
     });
 
     it('should find a webinar_participants record with student id', async () => {
-      const participant = await sequelize.model('webinar_participants').findByPk(user_id);
+      const participant = await sequelize.model('webinar_participants').findByPk(userId);
 
       expect(participant).toBeTruthy();
       expect(participant.name).toBe(webhookEvent.payload.object.participant.user_name);
@@ -152,8 +144,8 @@ describe('webinar-participants service', () => {
   });
 
   describe('when verificationToken is wrong', () => {
-    const user_id = faker.random.uuid();
-    const webhookEvent = createWebhookEvent({ user_id });
+    const userId = faker.random.uuid();
+    const webhookEvent = createWebhookEvent({ userId });
 
     it('should respond with Forbidden error', () => {
       return request
@@ -164,8 +156,8 @@ describe('webinar-participants service', () => {
   });
 
   describe('when webinarGroup is wrong', () => {
-    const user_id = faker.random.uuid();
-    const webhookEvent = createWebhookEvent({ user_id, topic: faker.random.word() });
+    const userId = faker.random.uuid();
+    const webhookEvent = createWebhookEvent({ userId, topic: faker.random.word() });
 
     it('should respond with Forbidden error', () => {
       return request
@@ -177,8 +169,8 @@ describe('webinar-participants service', () => {
   });
 
   describe('when event is wrong', () => {
-    const user_id = faker.random.uuid();
-    const webhookEvent = createWebhookEvent({ user_id, event: faker.random.word() });
+    const userId = faker.random.uuid();
+    const webhookEvent = createWebhookEvent({ userId, event: faker.random.word() });
 
     it('should respond with Forbidden error', () => {
       return request
