@@ -1,0 +1,40 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": false,
+  "db": {
+    "url": "postgres://root:supersecret@localhost:5433/wants2answer",
+    "dialect": "postgres",
+    "seederStorage": "sequelize",
+    "seederStorageTableName": "completed_seeders",
+    "migrationStorageTableName": "completed_migrations"
+  },
+  "apiToken": "supersecret",
+  "zoom": {
+    "verificationToken": "zoom_token",
+    "webinarGroup": "React23"
+  },
+  "authentication": {
+    "entity": "user",
+    "service": "users",
+    "secret": "iml7Gxw/TpX/p53dTKn1yNnH2pA=",
+    "authStrategies": [
+      "jwt",
+      "local"
+    ],
+    "jwtOptions": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "usernameField": "email",
+      "passwordField": "password"
+    }
+  }
+}

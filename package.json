@@ -1,0 +1,66 @@
+{
+  "name": "who-wants-to-answer-api",
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "",
+  "private": true,
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "kozzztya",
+    "email": "kozzztya@gmail.com"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "engines": {
+    "node": "> 12.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run jest",
+    "lint": "eslint src/. test/. --config .eslintrc.json",
+    "dev": "nodemon src/",
+    "start": "node src/",
+    "jest": "jest  --forceExit"
+  },
+  "dependencies": {
+    "@feathersjs/authentication": "^4.5.3",
+    "@feathersjs/authentication-local": "^4.5.3",
+    "@feathersjs/authentication-oauth": "^4.5.3",
+    "@feathersjs/configuration": "^4.5.2",
+    "@feathersjs/errors": "^4.5.2",
+    "@feathersjs/express": "^4.5.2",
+    "@feathersjs/feathers": "^4.5.2",
+    "@feathersjs/transport-commons": "^4.5.2",
+    "bluebird": "^3.7.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "feathers-sequelize": "^6.1.0",
+    "helmet": "^3.21.3",
+    "lodash": "^4.17.15",
+    "pg": "^7.18.2",
+    "sequelize": "^5.21.5",
+    "serve-favicon": "^2.5.0",
+    "uuid": "^7.0.2",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "faker": "^4.1.0",
+    "heroku": "^7.39.0",
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2",
+    "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2"
+  }
+}

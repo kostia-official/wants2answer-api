@@ -1,0 +1,11 @@
+{
+  "db": {
+    "url": "DATABASE_URL"
+  },
+  "port": "PORT",
+  "apiToken": "API_TOKEN",
+  "zoom": {
+    "verificationToken": "ZOOM_VERIFICATION_TOKEN",
+    "webinarGroup": "ZOOM_WEBINAR_GROUP"
+  }
+}
