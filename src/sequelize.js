@@ -4,7 +4,7 @@ module.exports = function(app) {
   const config = app.get('db');
   const sequelize = new Sequelize(config.url, {
     dialect: config.dialect,
-    logging: false,
+    logging: console.log,
     define: {
       freezeTableName: true
     }
