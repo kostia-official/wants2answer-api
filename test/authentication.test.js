@@ -1,12 +1,15 @@
 const app = require('../src/app');
 const faker = require('faker');
+const supertest = require('supertest');
+
+const request = supertest(app);
 
 describe('authentication', () => {
   it('registered the authentication service', () => {
     expect(app.service('signin')).toBeTruthy();
   });
 
-  describe('local strategy', () => {
+  describe('sign in', () => {
     const userInfo = {
       email: faker.internet.email(),
       name: 'John',
@@ -14,11 +17,7 @@ describe('authentication', () => {
     };
 
     beforeAll(async () => {
-      try {
-        await app.service('users').create(userInfo);
-      } catch (error) {
-        // Do nothing, it just means the user already exists and can be tested
-      }
+      await app.service('users').create(userInfo);
     });
 
     it('authenticates user and creates accessToken', async () => {
@@ -26,6 +25,25 @@ describe('authentication', () => {
 
       expect(accessToken).toBeTruthy();
       expect(user).toBeTruthy();
+    });
+  });
+
+  describe('sign up', () => {
+    const userInfo = {
+      email: faker.internet.email(),
+      name: 'John',
+      password: 'supersecret'
+    };
+
+    it('authenticates user and creates accessToken', async () => {
+      await request
+        .post('/users')
+        .send(userInfo)
+        .expect(201)
+        .expect(({ body }) => {
+          expect(body.accessToken).toBeTruthy();
+          expect(body.user).toBeTruthy();
+        });
     });
   });
 });

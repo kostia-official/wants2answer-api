@@ -4,11 +4,11 @@ module.exports = function(app) {
   const config = app.get('db');
   const sequelize = new Sequelize(config.url, {
     dialect: config.dialect,
-    logging: console.log,
+    logging: false,
     define: {
       freezeTableName: true
     },
-    native: true
+    native: process.env.NODE_ENV === 'production'
   });
   const oldSetup = app.setup;
 

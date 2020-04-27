@@ -14,13 +14,9 @@ module.exports = {
   },
 
   after: {
-    all: [
-      // Make sure the password field is never sent to the client
-      // Always must be the last hook
-      protect('password')
-    ],
-    find: [],
-    get: [],
+    all: [],
+    find: [protect('password')],
+    get: [protect('password')],
     create: [
       async (ctx) => {
         const { email, password } = ctx.arguments[0];
@@ -29,9 +25,9 @@ module.exports = {
         return ctx;
       }
     ],
-    update: [],
-    patch: [],
-    remove: []
+    update: [protect('password')],
+    patch: [protect('password')],
+    remove: [protect('password')]
   },
 
   error: {
