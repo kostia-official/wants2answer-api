@@ -3,17 +3,17 @@ const { Users } = require('./users.class');
 const createModel = require('../../models/users.model');
 const hooks = require('./users.hooks');
 
-module.exports = function (app) {
+module.exports = function(app) {
   const options = {
     Model: createModel(app),
     paginate: app.get('paginate')
   };
 
-  // Initialize our service with any options it requires
-  app.use('/users', new Users(options, app));
+  const users = new Users(options, app);
 
-  // Get our initialized service so that we can register hooks
-  const service = app.service('users');
+  app.use('/users/me', { find: users.me });
+  app.use('/users', users);
 
-  service.hooks(hooks);
+  app.service('users/me').hooks(hooks);
+  app.service('users').hooks(hooks);
 };
