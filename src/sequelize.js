@@ -7,7 +7,8 @@ module.exports = function(app) {
     logging: false,
     define: {
       freezeTableName: true
-    }
+    },
+    native: process.env.NODE_ENV === 'production'
   });
   const oldSetup = app.setup;
 
