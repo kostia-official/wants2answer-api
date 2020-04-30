@@ -15,14 +15,15 @@ exports.Webhooks = class Webhooks {
     const verificationToken = _.get(params, 'token');
     const event = _.get(data, 'event');
     const webinarTopic = _.get(data, 'payload.object.topic');
+    const regexp = new RegExp(zoomConfig.webinarGroupRegex, 'i')
 
     if (verificationToken !== zoomConfig.verificationToken) {
       throw new Forbidden('Wrong verification token');
     }
-    if (!_.includes(webinarTopic, zoomConfig.webinarGroup)) {
+    if (!regexp.test(webinarTopic)) {
       throw new Forbidden('Wrong webinar group');
     }
-    if (event !== 'webinar.participant_joined') {
+    if (!_.includes(event, 'participant_joined')) {
       throw new Forbidden('Wrong event');
     }
 

@@ -11,7 +11,7 @@ const toLocalDate = (date) => new Date(date).toLocaleDateString();
 
 const createWebhookEvent = ({
   userId = '234883072',
-  topic = zoomConfig.webinarGroup,
+  topic = zoomConfig.webinarGroupRegex,
   event = 'webinar.participant_joined',
   joinTime = '2020-04-02T17:15:22Z'
 }) => ({

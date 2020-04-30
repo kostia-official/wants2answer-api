@@ -13,6 +13,6 @@
   "apiToken": "supersecret",
   "zoom": {
     "verificationToken": "zoom_token",
-    "webinarGroup": "React23"
+    "webinarGroupRegex": "(?=.*react)(?=.*23)"
   }
 }

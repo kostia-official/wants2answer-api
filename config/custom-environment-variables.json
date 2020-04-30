@@ -6,6 +6,6 @@
   "apiToken": "API_TOKEN",
   "zoom": {
     "verificationToken": "ZOOM_VERIFICATION_TOKEN",
-    "webinarGroup": "ZOOM_WEBINAR_GROUP"
+    "webinarGroupRegex": "ZOOM_WEBINAR_GROUP_REGEX"
   }
 }
